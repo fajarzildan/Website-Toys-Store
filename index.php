@@ -40,10 +40,10 @@ else {
             display: flex; flex-direction: column; min-height: 100vh;
         }
         .container.mt-4 { flex: 1; }
-        
+
         .navbar-custom {
             background: linear-gradient(135deg, #028BEF 0%, #00223B 100%);
-            padding: 15px 0;
+            padding: 10px 0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .search-container { border: none; border-radius: 50px; overflow: hidden; background: white; padding: 2px; }
@@ -52,11 +52,10 @@ else {
 
         .carousel-item img {
             border-radius: 15px;
-            height: 400px;
+            height: 400px; 
             object-fit: cover;
             object-position: center;
         }
-        @media (max-width: 768px) { .carousel-item img { height: 200px; } }
 
         .cat-icon {
             width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
@@ -71,7 +70,8 @@ else {
         .card-product:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         
         .card-img-wrapper {
-            height: 180px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; padding: 10px;
+            height: 180px; 
+            overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; padding: 10px;
         }
         .card-img-top { width: 100%; height: 100%; object-fit: contain; }
         
@@ -79,101 +79,117 @@ else {
             font-size: 14px; line-height: 20px; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: #212121; margin-bottom: 5px;
         }
         .product-price { font-size: 16px; font-weight: 700; color: #028BEF; }
-        
+
+        @media (max-width: 768px) { 
+            .carousel-item img { height: 180px; } 
+            
+            .card-img-wrapper { height: 135px; padding: 5px; } 
+            
+            .product-title { font-size: 12px; line-height: 1.4; }
+            .product-price { font-size: 14px; }
+            
+            .cat-icon { width: 45px; height: 45px; font-size: 20px; }
+            .cat-text { font-size: 11px; }
+            
+            .container { padding-left: 15px; padding-right: 15px; }
+        }
+
         .location-info { font-size: 11px; color: #6c757d; display: flex; align-items: center; margin-top: 8px; }
         .badge-toko { background-color: #cce5ff; color: #004085; font-weight: 700; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
         .rating-info { font-size: 11px; color: #6c757d; margin-top: 3px; }
-
         .grayscale { filter: grayscale(100%); opacity: 0.7; }
         .rotate-n15 { transform: rotate(-15deg); }
-
+        
         #myBtn {
-            display: none;
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 99;
-            border: none;
-            outline: none;
-            background: linear-gradient(135deg, #028BEF 0%, #00223B 100%);
-            color: white;
-            cursor: pointer;
-            padding: 15px;
-            border-radius: 50%;
-            font-size: 18px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: none; outline: none;
+            background: linear-gradient(135deg, #028BEF 0%, #00223B 100%); color: white; cursor: pointer; padding: 15px; border-radius: 50%; font-size: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s;
         }
-        #myBtn:hover {
-            background: #0b5ed7;
-            transform: translateY(-5px);
-        }
+        #myBtn:hover { background: #0b5ed7; transform: translateY(-5px); }
     </style>
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4 me-4" href="index.php"><i class="fas fa-robot me-1"></i> Toys Store</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="row w-100 align-items-center g-2 g-lg-3 m-0">
+                
+                <div class="col-12 col-lg-auto d-flex justify-content-between align-items-center">
+                    <a class="navbar-brand fw-bold fs-4" href="index.php">
+                        <i class="fas fa-robot me-1"></i> Toys Store
+                    </a>
+                    
+                    <div class="d-flex align-items-center gap-2 d-lg-none">
+                        <?php
+                        $total_item_mobile = 0;
+                        if(isset($_SESSION['keranjang'])){
+                            foreach($_SESSION['keranjang'] as $jumlah){ $total_item_mobile += $jumlah; }
+                        }
+                        ?>
+                        <a href="keranjang.php" class="btn text-white position-relative">
+                            <i class="fas fa-shopping-cart fs-5"></i>
+                            <?php if($total_item_mobile > 0){ ?>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-warning text-dark border border-light" style="font-size: 9px;"><?php echo $total_item_mobile; ?></span>
+                            <?php } ?>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
 
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <div class="flex-grow-1 me-4">
-                    <form action="index.php" method="GET" class="d-flex search-container shadow-sm">
+                <div class="col-12 col-lg">
+                     <form action="index.php" method="GET" class="d-flex search-container shadow-sm w-100">
                         <input type="text" name="cari" class="form-control search-input ps-3" placeholder="Mau cari mainan apa hari ini?" value="<?php if(isset($_GET['cari'])){ echo htmlspecialchars($_GET['cari']); } ?>">
                         <button type="submit" class="btn btn-light rounded-pill px-3 text-primary"><i class="fas fa-search"></i></button>
                     </form>
                 </div>
 
-                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
-                    <a href="tentang.php" class="text-white text-decoration-none small fw-bold me-2">
-                        <i class="fas fa-store me-1"></i> Info Toko
-                    </a>
-                    <?php
-                    $total_item = 0;
-                    if(isset($_SESSION['keranjang'])){
-                        foreach($_SESSION['keranjang'] as $jumlah){ $total_item += $jumlah; }
-                    }
-                    ?>
-                    <a href="keranjang.php" class="btn position-relative text-white">
-                        <i class="fas fa-shopping-cart fs-5"></i>
-                        <?php if($total_item > 0){ ?>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-warning text-dark border border-light" style="font-size: 10px;"><?php echo $total_item; ?></span>
-                        <?php } ?>
-                    </a>
-                    <div class="vr h-50 mx-2 bg-white opacity-50"></div> 
+                <div class="col-12 col-lg-auto">
+                    <div class="collapse navbar-collapse justify-content-lg-end" id="navbarContent">
+                        <div class="d-flex align-items-center gap-3 flex-wrap mt-3 mt-lg-0">
+                            
+                            <a href="tentang.php" class="text-white text-decoration-none small fw-bold">
+                                <i class="fas fa-store me-1"></i> Info
+                            </a>
 
-                    <?php if(isset($_SESSION['status_login'])) { ?>
-                        
-                        <?php if($_SESSION['role'] == 'admin'){ ?>
-                            <a href="admin.php" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold text-dark">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            <?php
+                            $total_item = 0;
+                            if(isset($_SESSION['keranjang'])){
+                                foreach($_SESSION['keranjang'] as $jumlah){ $total_item += $jumlah; }
+                            }
+                            ?>
+                            <a href="keranjang.php" class="btn position-relative text-white d-none d-lg-block">
+                                <i class="fas fa-shopping-cart fs-5"></i>
+                                <?php if($total_item > 0){ ?>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-warning text-dark border border-light" style="font-size: 10px;"><?php echo $total_item; ?></span>
+                                <?php } ?>
                             </a>
-                            <a href="#" class="btn btn-outline-light text-primary bg-white btn-sm rounded-pill px-3 shadow-sm fw-bold" onclick="logoutConfirm(event)">
-                                Logout <i class="fas fa-sign-out-alt ms-1"></i>
-                            </a>
-                        <?php } else { 
-                            $uid = $_SESSION['user_id'];
-                            $cek_foto = mysqli_query($conn, "SELECT foto FROM users WHERE id='$uid'");
-                            $data_user = mysqli_fetch_array($cek_foto);
-                            $foto_nav = $data_user['foto'] ? $data_user['foto'] : 'default.png';
-                        ?>
-                            <a href="profil.php" class="text-decoration-none text-white d-flex align-items-center me-3">
-                                <img src="foto_produk/<?php echo $foto_nav; ?>" style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%; border: 2px solid white;" class="me-2">
-                                <span class="fw-bold d-none d-lg-inline">Hai, <?php echo $_SESSION['user_nama']; ?></span>
-                            </a>
-                            <a href="#" class="btn btn-outline-light text-primary bg-white btn-sm rounded-pill px-3 shadow-sm fw-bold" onclick="logoutConfirm(event)">
-                                Logout <i class="fas fa-sign-out-alt ms-1"></i>
-                            </a>
-                        <?php } ?>
+                            
+                            <div class="vr h-50 mx-2 bg-white opacity-50 d-none d-lg-block"></div> 
 
-                    <?php } else { ?>
-                        <a href="login.php" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-bold">Masuk</a>
-                        <a href="daftar.php" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-bold">Daftar</a>
-                    <?php } ?>
+                            <?php if(isset($_SESSION['status_login'])) { ?>
+                                <?php if($_SESSION['role'] == 'admin'){ ?>
+                                    <a href="admin.php" class="btn btn-warning btn-sm rounded-pill px-3 fw-bold text-dark"><i class="fas fa-tachometer-alt"></i> Dash</a>
+                                <?php } else { 
+                                    $uid = $_SESSION['user_id'];
+                                    $cek_foto = mysqli_query($conn, "SELECT foto FROM users WHERE id='$uid'");
+                                    $data_user = mysqli_fetch_array($cek_foto);
+                                    $foto_nav = $data_user['foto'] ? $data_user['foto'] : 'default.png';
+                                ?>
+                                    <a href="profil.php" class="text-decoration-none text-white d-flex align-items-center">
+                                        <img src="foto_produk/<?php echo $foto_nav; ?>" style="width: 32px; height: 32px; object-fit: cover; border-radius: 50%; border: 2px solid white;" class="me-2">
+                                        <span class="fw-bold" style="font-size: 13px;"><?php echo substr($_SESSION['user_nama'], 0, 8); ?>..</span>
+                                    </a>
+                                <?php } ?>
+                                <a href="#" class="text-white ms-2" onclick="logoutConfirm(event)" title="Keluar"><i class="fas fa-sign-out-alt fs-5"></i></a>
+                            <?php } else { ?>
+                                <a href="login.php" class="btn btn-outline-light btn-sm rounded-pill px-3 fw-bold">Masuk</a>
+                                <a href="daftar.php" class="btn btn-light text-primary btn-sm rounded-pill px-3 fw-bold">Daftar</a>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </div>
+            
             </div>
         </div>
     </nav>
@@ -234,7 +250,7 @@ else {
             <a href="#" class="text-decoration-none small fw-bold">Lihat Semua</a>
         </div>
         
-        <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3 mb-5">
+        <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-2 mb-5">
             <?php 
             if(mysqli_num_rows($query) > 0){
                 while($data = mysqli_fetch_array($query)) { 
